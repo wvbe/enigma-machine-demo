@@ -1,4 +1,4 @@
-const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+import Event from './Event';
 
 type RotorDescription = {
 	name?: string;
@@ -6,14 +6,25 @@ type RotorDescription = {
 	year?: number;
 };
 
+const DEFAULT_ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
 export class Rotor implements RotorDescription {
-	private readonly wiring: number[];
-	private readonly notches: number[];
+	public readonly wiring: number[];
+	public readonly notches: number[];
 
 	public position: number = 0;
+	public readonly alphabet = DEFAULT_ALPHABET;
 	public readonly name?: string;
 	public readonly model?: string;
 	public readonly year?: number;
+
+	public readonly $rotate = new Event<
+		[
+			// The new position
+			number,
+			// Wether or not a notch was hit
+			boolean
+		]
+	>();
 
 	constructor(wiring: number[], notches: number[], description: RotorDescription = {}) {
 		this.wiring = wiring;
@@ -27,9 +38,12 @@ export class Rotor implements RotorDescription {
 	 */
 	public shift(): boolean {
 		this.position = this.position + 1;
-		return this.notches === null
-			? false
-			: this.notches.includes((this.position % this.wiring.length) - 1);
+		const hitsNotch =
+			this.notches === null
+				? false
+				: this.notches.includes((this.position % this.wiring.length) - 1);
+		this.$rotate.trigger(this.position, hitsNotch);
+		return hitsNotch;
 	}
 
 	/**
@@ -60,19 +74,19 @@ export class Rotor implements RotorDescription {
 		const codingNumbers = coding
 			.toLowerCase()
 			.split('')
-			.map(letter => alphabet.indexOf(letter));
+			.map(letter => DEFAULT_ALPHABET.indexOf(letter));
 		const notchesNumbers = !notches
 			? []
 			: notches
 					.toLowerCase()
 					.split('')
-					.map(letter => alphabet.indexOf(letter));
+					.map(letter => DEFAULT_ALPHABET.indexOf(letter));
 		return new Rotor(codingNumbers, notchesNumbers, description);
 	}
 
 	clone(position?: string | number) {
 		if (typeof position === 'string') {
-			position = alphabet.indexOf(position);
+			position = this.alphabet.indexOf(position.toLowerCase());
 		}
 		const rotor = new Rotor(this.wiring, this.notches, {
 			name: this.name,

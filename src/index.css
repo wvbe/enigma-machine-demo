@@ -1,13 +1,18 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	font-family: monospace;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* The container for rotors and the reflector */
+.scrambler {
+	display: flex;
+	flex-direction: row;
+}
+
+.rotor {
+	padding: 1em;
+	background-color: #eee;
+	margin-right: 1em;
+}
+.rotor:last-child {
+	margin-right: 0;
 }
