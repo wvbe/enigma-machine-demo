@@ -1,12 +1,14 @@
 import Event from './Event';
 
 type RotorDescription = {
+	alphabet?: string;
 	name?: string;
 	model?: string;
 	year?: number;
 };
 
 const DEFAULT_ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
+
 export class Rotor implements RotorDescription {
 	public readonly wiring: number[];
 	public readonly notches: number[];
@@ -71,16 +73,17 @@ export class Rotor implements RotorDescription {
 	}
 
 	static fromAlphabet(coding: string, notches: string, description?: RotorDescription) {
+		const alphabet = description?.alphabet || DEFAULT_ALPHABET;
 		const codingNumbers = coding
 			.toLowerCase()
 			.split('')
-			.map(letter => DEFAULT_ALPHABET.indexOf(letter));
+			.map(letter => alphabet.indexOf(letter));
 		const notchesNumbers = !notches
 			? []
 			: notches
 					.toLowerCase()
 					.split('')
-					.map(letter => DEFAULT_ALPHABET.indexOf(letter));
+					.map(letter => alphabet.indexOf(letter));
 		return new Rotor(codingNumbers, notchesNumbers, description);
 	}
 

@@ -16,3 +16,7 @@ body {
 .rotor:last-child {
 	margin-right: 0;
 }
+
+.rotor pre {
+	margin: 0;
+}
