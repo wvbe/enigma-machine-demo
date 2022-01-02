@@ -1,11 +1,17 @@
 body {
 	font-family: monospace;
+	user-select: none;
 }
 
-/* The container for rotors and the reflector */
-.scrambler {
+.machine {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
 	display: flex;
 	flex-direction: row;
+	align-items: stretch;
 }
 
 .rotor {
@@ -19,4 +25,30 @@ body {
 
 .rotor pre {
 	margin: 0;
+}
+
+.keyboards {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 0.5em;
+}
+.keyboard {
+}
+.keyboard > * {
+	text-align: center;
+	white-space: nowrap;
+}
+.keyboard > * > * {
+	margin: 0.5em;
+	display: inline-block;
+	background-color: #eee;
+}
+.keyboard > * > .enabled {
+	background-color: black;
+	color: #fff;
+}
+.keyboard > * > .has-click:hover {
+	background-color: blueviolet;
+	cursor: pointer;
 }
