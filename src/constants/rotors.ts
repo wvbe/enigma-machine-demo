@@ -1,5 +1,9 @@
 import { Rotor } from '../classes/Rotor';
 
+export const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+export const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+
 // Terms:
 //   ETW - Eintrittzwalze - Entry disk
 //   UKW - Umkehrwalze    - Reflector

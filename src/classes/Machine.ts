@@ -1,12 +1,15 @@
 import Event from './Event';
 import { Rotor } from './Rotor';
 
-const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-
 export class Machine {
 	public readonly rotors: Rotor[] = [];
 	public reflector?: Rotor;
 	public readonly $encode = new Event<[number[]]>();
+	public readonly alphabet: string;
+
+	constructor(alphabet: string) {
+		this.alphabet = alphabet.toLowerCase();
+	}
 
 	addRotor(rotor: Rotor) {
 		this.rotors.push(rotor);
@@ -27,7 +30,7 @@ export class Machine {
 
 	encodeLetter(letter: string) {
 		this.shiftRotors();
-		let index = alphabet.indexOf(letter.toLowerCase());
+		let index = this.alphabet.indexOf(letter.toLowerCase());
 		const trail = [index];
 		for (let i = 0; i < this.rotors.length; i++) {
 			const rotor = this.rotors[i];
@@ -46,6 +49,6 @@ export class Machine {
 		}
 
 		this.$encode.trigger(trail);
-		return alphabet[index];
+		return this.alphabet[index];
 	}
 }

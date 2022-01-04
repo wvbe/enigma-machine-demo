@@ -1,8 +1,8 @@
 import { Machine } from './classes/Machine';
-import { UKW_B, I, II, III } from './constants/rotors';
+import { UKW_B, I, II, III, alphabet } from './constants/rotors';
 
 describe('Machine #1', () => {
-	const machine = new Machine();
+	const machine = new Machine(alphabet);
 	machine.addRotor(I.clone());
 	machine.addRotor(II.clone());
 	machine.addRotor(III.clone());
@@ -49,7 +49,7 @@ describe('Machine #1', () => {
 });
 
 describe('Machine #2', () => {
-	const machine = new Machine();
+	const machine = new Machine(alphabet);
 	machine.addRotor(I.clone());
 	machine.addRotor(II.clone());
 	machine.addRotor(III.clone());

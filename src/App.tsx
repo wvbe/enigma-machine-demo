@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import { Machine as MachineClass } from './classes/Machine';
 import { Machine } from './components/Machine';
-import { I, II, III, UKW_B } from './constants/rotors';
+import { ALPHABET, I, II, III, UKW_B } from './constants/rotors';
 
 function App() {
 	const machine = useMemo(() => {
-		const machine = new MachineClass();
+		const machine = new MachineClass(ALPHABET);
 		machine.addRotor(I.clone());
 		machine.addRotor(II.clone());
 		machine.addRotor(III.clone());
@@ -15,7 +15,11 @@ function App() {
 		return machine;
 	}, []);
 
-	return <Machine instance={machine} />;
+	return (
+		<>
+			<Machine instance={machine} />
+		</>
+	);
 }
 
 export default App;
