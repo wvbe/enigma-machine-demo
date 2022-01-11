@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect } from 'react';
-import { Machine as MachineClass } from '../classes/Machine';
+import { Machine as MachineClass } from '@wvbe/enigma-machine';
 import { useEvent } from '../hooks/useEvent';
 import { Keyboard } from './Keyboard';
 import { Rotor } from './Rotor';
@@ -12,7 +12,7 @@ export const Machine: FunctionComponent<{ instance: MachineClass }> = ({ instanc
 			if (key.length !== 1 || !key.match(/[a-z]/g)) {
 				return;
 			}
-			instance.encodeLetter(key);
+			instance.encode(key);
 		}
 		window.document.body.addEventListener('keypress', handleKey);
 		return () => {
@@ -62,7 +62,7 @@ export const Machine: FunctionComponent<{ instance: MachineClass }> = ({ instanc
 					character={offsets[0]}
 					isLamp={false}
 					onLetterPress={letter => {
-						instance.encodeLetter(letter.toLowerCase());
+						instance.encode(letter.toLowerCase());
 					}}
 				/>
 			</div>

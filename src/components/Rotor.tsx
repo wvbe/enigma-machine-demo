@@ -1,9 +1,9 @@
 import { FunctionComponent } from 'react';
-import { Rotor as RotorClass } from '../classes/Rotor';
+import { Rotor as RotorClass } from '@wvbe/enigma-machine';
 
 /**
  * One visible radiant of the rotor, representing one letter (the input) and scrambling it to
- * another position.
+ * another rotation.
  */
 const RotorSegment: FunctionComponent<{
 	rotor: RotorClass;
@@ -19,7 +19,7 @@ const RotorSegment: FunctionComponent<{
 	toLampsIn: boolean;
 	toLampsOut: boolean;
 }> = ({ rotor, index, toReflectorIn, toReflectorOut, toLampsIn, toLampsOut }) => {
-	const rIndex = (index + rotor.position) % rotor.alphabet.length;
+	const rIndex = (index + rotor.rotation) % rotor.alphabet.length;
 	const letter = rotor.alphabet.charAt(rIndex);
 	const hasNotch = rotor.notches.includes(rIndex);
 

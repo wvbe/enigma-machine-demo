@@ -1,10 +1,10 @@
 import { FunctionComponent } from 'react';
-import { Rotor as RotorClass } from '../classes/Rotor';
+import { Rotor as RotorClass } from '@wvbe/enigma-machine';
 
 function useLetters(rotor: RotorClass) {
 	return (
-		rotor.alphabet.substring(rotor.position, rotor.alphabet.length) +
-		rotor.alphabet.substring(0, rotor.position)
+		rotor.alphabet.substring(rotor.rotation, rotor.alphabet.length) +
+		rotor.alphabet.substring(0, rotor.rotation)
 	)
 		.split('')
 		.map((letter, i) => [letter, rotor.alphabet[rotor.wiring[i]]]);
