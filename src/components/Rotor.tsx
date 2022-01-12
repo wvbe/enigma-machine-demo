@@ -1,6 +1,6 @@
 import { Rotor as RotorClass } from '@wvbe/enigma-machine';
 import { Fragment, FunctionComponent } from 'react';
-import { ROTOR_WIDTH, yForI } from '../util/svg';
+import { CHARACTER_PADDING, ROTOR_HEIGHT, ROTOR_WIDTH, WIRE_PADDING, yForI } from '../util/svg';
 import { Signal } from './Signal';
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
@@ -11,15 +11,26 @@ export const Rotor: FunctionComponent<{
 }> = ({ instance, signalsTowardsReflector, signalsTowardsLamps }) => {
 	return (
 		<>
+			<rect
+				x={WIRE_PADDING}
+				width={ROTOR_WIDTH - 2 * WIRE_PADDING}
+				fill="#eee"
+				height={ROTOR_HEIGHT}
+			/>
 			{alphabet.split('').map((_, index) => {
 				const letter = alphabet.charAt((index + instance.rotation) % instance.size);
 				return (
 					<Fragment key={index}>
-						<text x="5" y={yForI(index)} textAnchor="start" alignmentBaseline="central">
+						<text
+							x={CHARACTER_PADDING}
+							y={yForI(index)}
+							textAnchor="start"
+							alignmentBaseline="central"
+						>
 							{letter}
 						</text>
 						<text
-							x={ROTOR_WIDTH - 5}
+							x={ROTOR_WIDTH - CHARACTER_PADDING}
 							y={yForI(index)}
 							textAnchor="end"
 							alignmentBaseline="central"

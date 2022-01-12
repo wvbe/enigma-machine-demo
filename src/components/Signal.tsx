@@ -1,26 +1,22 @@
 import { FunctionComponent } from 'react';
-import { ROTOR_PADDING, ROTOR_WIDTH, yForI } from '../util/svg';
+import { WIRE_PADDING, ROTOR_WIDTH, yForI } from '../util/svg';
 
 export const Signal: FunctionComponent<{
 	stroke?: string;
 	from?: number;
 	to?: number;
-}> = ({ from, to, stroke = 'black' }) => {
+	short?: boolean;
+}> = ({ from, to, stroke = 'black', short }) => {
 	if (from === undefined || to === undefined) {
 		return null;
 	}
-	return (
-		<polyline
-			points={[
-				[0, yForI(from)],
-				[ROTOR_PADDING, yForI(from)],
-				[ROTOR_WIDTH - ROTOR_PADDING, yForI(to)],
-				[ROTOR_WIDTH, yForI(to)]
-			]
-				.map(c => c.join(','))
-				.join(' ')}
-			stroke={stroke}
-			fill="none"
-		/>
-	);
+	const coords = [
+		[WIRE_PADDING, yForI(from)],
+		[ROTOR_WIDTH - WIRE_PADDING, yForI(to)]
+	];
+	if (!short) {
+		coords.unshift([0, yForI(from)]);
+		coords.push([ROTOR_WIDTH, yForI(to)]);
+	}
+	return <polyline points={coords.map(c => c.join(',')).join(' ')} stroke={stroke} fill="none" />;
 };

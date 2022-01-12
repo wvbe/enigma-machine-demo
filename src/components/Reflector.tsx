@@ -1,6 +1,6 @@
 import { Rotor as RotorClass } from '@wvbe/enigma-machine';
 import { FunctionComponent } from 'react';
-import { REFLECTOR_WIDTH, yForI } from '../util/svg';
+import { CHARACTER_PADDING, REFLECTOR_WIDTH, yForI } from '../util/svg';
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
@@ -17,7 +17,7 @@ export const Reflector: FunctionComponent<{
 				return (
 					<text
 						key={index}
-						x={REFLECTOR_WIDTH - 5}
+						x={REFLECTOR_WIDTH - CHARACTER_PADDING}
 						y={yForI(index)}
 						textAnchor="end"
 						alignmentBaseline="central"
@@ -30,8 +30,8 @@ export const Reflector: FunctionComponent<{
 				<polyline
 					points={[
 						[REFLECTOR_WIDTH, yForI(signalIn)],
-						[0, yForI(signalIn)],
-						[0, yForI(signalOut)],
+						[1, yForI(signalIn)],
+						[1, yForI(signalOut)],
 						[REFLECTOR_WIDTH, yForI(signalOut)]
 					]
 						.map(c => c.join(','))
