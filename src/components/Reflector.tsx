@@ -1,24 +1,45 @@
-import { FunctionComponent } from 'react';
 import { Rotor as RotorClass } from '@wvbe/enigma-machine';
+import { FunctionComponent } from 'react';
+import { REFLECTOR_WIDTH, yForI } from '../util/svg';
 
-function useLetters(rotor: RotorClass) {
-	return (
-		rotor.alphabet.substring(rotor.rotation, rotor.alphabet.length) +
-		rotor.alphabet.substring(0, rotor.rotation)
-	)
-		.split('')
-		.map((letter, i) => [letter, rotor.alphabet[rotor.wiring[i]]]);
-}
+const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
-export const Reflector: FunctionComponent<{ instance: RotorClass }> = ({ instance }) => {
-	const letters = useLetters(instance);
+export const Reflector: FunctionComponent<{
+	instance: RotorClass;
+	signalIn: number | undefined;
+	signalOut: number | undefined;
+}> = ({ instance, signalIn, signalOut }) => {
 	return (
-		<div className="rotor">
-			{letters.map(([inLetter, outLetter]) => (
-				<div key={inLetter}>
-					{inLetter} {':'} {outLetter}
-				</div>
-			))}
-		</div>
+		<>
+			{instance.wiring.map((mapped, index) => {
+				const letter = alphabet.charAt((index + instance.rotation) % instance.size);
+
+				return (
+					<text
+						key={index}
+						x={REFLECTOR_WIDTH - 5}
+						y={yForI(index)}
+						textAnchor="end"
+						alignmentBaseline="central"
+					>
+						{letter}
+					</text>
+				);
+			})}
+			{signalIn !== undefined && signalOut !== undefined && (
+				<polyline
+					points={[
+						[REFLECTOR_WIDTH, yForI(signalIn)],
+						[0, yForI(signalIn)],
+						[0, yForI(signalOut)],
+						[REFLECTOR_WIDTH, yForI(signalOut)]
+					]
+						.map(c => c.join(','))
+						.join(' ')}
+					stroke="black"
+					fill="none"
+				/>
+			)}
+		</>
 	);
 };

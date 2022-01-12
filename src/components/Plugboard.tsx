@@ -1,18 +1,21 @@
-import { Rotor as RotorClass } from '@wvbe/enigma-machine';
+import { Plugboard as PlugboardClass } from '@wvbe/enigma-machine';
 import { Fragment, FunctionComponent } from 'react';
 import { ROTOR_WIDTH, yForI } from '../util/svg';
 import { Signal } from './Signal';
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-export const Rotor: FunctionComponent<{
-	instance: RotorClass;
+
+export const Plugboard: FunctionComponent<{
+	instance: PlugboardClass;
 	signalsTowardsReflector: [number | undefined, number | undefined];
 	signalsTowardsLamps: [number | undefined, number | undefined];
 }> = ({ instance, signalsTowardsReflector, signalsTowardsLamps }) => {
 	return (
 		<>
 			{alphabet.split('').map((_, index) => {
-				const letter = alphabet.charAt((index + instance.rotation) % instance.size);
+				const letter = alphabet.charAt(index);
+				const wiring = instance.encode(index);
+
 				return (
 					<Fragment key={index}>
 						<text x="5" y={yForI(index)} textAnchor="start" alignmentBaseline="central">
@@ -26,6 +29,11 @@ export const Rotor: FunctionComponent<{
 						>
 							{letter}
 						</text>
+						{wiring !== index &&
+							signalsTowardsLamps[0] !== index &&
+							signalsTowardsReflector[1] !== index && (
+								<Signal from={index} to={wiring} stroke="lightgray" />
+							)}
 					</Fragment>
 				);
 			})}
