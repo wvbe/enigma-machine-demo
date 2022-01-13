@@ -6,21 +6,21 @@ const KeyboardLetter: FunctionComponent<{
 	isLamp: boolean;
 	onPress?: (letter: string) => void;
 }> = ({ letter, enabled, isLamp, onPress }) => {
-	let mark = [' ', ' '];
-	if (enabled) {
-		mark = isLamp ? ['[', ']'] : ['{', '}'];
-	}
 	const onClick = onPress
 		? () => {
 				onPress(letter);
 		  }
 		: undefined;
-	const className = [enabled ? 'enabled' : undefined, onClick ? 'has-click' : undefined]
+	const className = [
+		isLamp ? 'is-lamp' : 'is-key',
+		enabled ? 'enabled' : undefined,
+		onClick ? 'has-click' : undefined
+	]
 		.filter(Boolean)
 		.join(' ');
 	return (
 		<pre className={className} onClick={onClick}>
-			{mark[0] + String(letter) + mark[1]}
+			{` ${letter} `}
 		</pre>
 	);
 };

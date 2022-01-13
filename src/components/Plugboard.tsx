@@ -5,10 +5,10 @@ import {
 	PLUGBOARD_WIDTH,
 	ROTOR_HEIGHT,
 	ROTOR_WIDTH,
-	WIRE_PADDING,
-	yForI
+	WIRE_PADDING
 } from '../util/svg';
-import { Signal } from './Signal';
+import { SignalLetter } from './SignalLetter';
+import { SignalWire } from './SignalWire';
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
@@ -26,41 +26,52 @@ export const Plugboard: FunctionComponent<{
 				height={ROTOR_HEIGHT}
 			/>
 			{alphabet.split('').map((_, index) => {
-				const letter = alphabet.charAt(index);
 				const wiring = instance.encode(index);
-
-				return (
-					<Fragment key={index}>
-						<text
-							x={CHARACTER_PADDING}
-							y={yForI(index)}
-							textAnchor="start"
-							alignmentBaseline="central"
-						>
-							{letter}
-						</text>
-						<text
-							x={ROTOR_WIDTH - CHARACTER_PADDING}
-							y={yForI(index)}
-							textAnchor="end"
-							alignmentBaseline="central"
-						>
-							{letter}
-						</text>
-						{wiring !== index &&
-							signalsTowardsLamps[0] !== index &&
-							signalsTowardsReflector[1] !== index && (
-								<Signal from={index} to={wiring} stroke="#bbb" short />
-							)}
-					</Fragment>
-				);
+				// if (wiring === index) {
+				// 	return null;
+				// }
+				if (signalsTowardsLamps[0] === index || signalsTowardsReflector[1] === index) {
+					return null;
+				}
+				return <SignalWire from={index} to={wiring} stroke="#bbb" short />;
 			})}
-			<Signal
+			<SignalWire
 				from={signalsTowardsReflector[1]}
 				to={signalsTowardsReflector[0]}
 				stroke="blue"
 			/>
-			<Signal from={signalsTowardsLamps[0]} to={signalsTowardsLamps[1]} stroke="red" />
+			<SignalWire from={signalsTowardsLamps[0]} to={signalsTowardsLamps[1]} stroke="red" />
+			{alphabet.split('').map((_, index) => {
+				const letter = alphabet.charAt(index);
+				return (
+					<Fragment key={index}>
+						<SignalLetter
+							index={index}
+							letter={letter}
+							x={CHARACTER_PADDING}
+							highlight={
+								signalsTowardsReflector[1] === index
+									? 'blue'
+									: signalsTowardsLamps[0] === index
+									? 'red'
+									: undefined
+							}
+						/>
+						<SignalLetter
+							index={index}
+							letter={letter}
+							x={ROTOR_WIDTH - CHARACTER_PADDING}
+							highlight={
+								signalsTowardsReflector[0] === index
+									? 'blue'
+									: signalsTowardsLamps[1] === index
+									? 'red'
+									: undefined
+							}
+						/>
+					</Fragment>
+				);
+			})}
 		</>
 	);
 };

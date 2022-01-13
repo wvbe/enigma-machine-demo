@@ -1,7 +1,8 @@
 import { Rotor as RotorClass } from '@wvbe/enigma-machine';
 import { Fragment, FunctionComponent } from 'react';
-import { CHARACTER_PADDING, ROTOR_HEIGHT, ROTOR_WIDTH, WIRE_PADDING, yForI } from '../util/svg';
-import { Signal } from './Signal';
+import { CHARACTER_PADDING, ROTOR_HEIGHT, ROTOR_WIDTH, WIRE_PADDING } from '../util/svg';
+import { SignalLetter } from './SignalLetter';
+import { SignalWire } from './SignalWire';
 
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 export const Rotor: FunctionComponent<{
@@ -17,35 +18,43 @@ export const Rotor: FunctionComponent<{
 				fill="#eee"
 				height={ROTOR_HEIGHT}
 			/>
-			{alphabet.split('').map((_, index) => {
-				const letter = alphabet.charAt((index + instance.rotation) % instance.size);
-				return (
-					<Fragment key={index}>
-						<text
-							x={CHARACTER_PADDING}
-							y={yForI(index)}
-							textAnchor="start"
-							alignmentBaseline="central"
-						>
-							{letter}
-						</text>
-						<text
-							x={ROTOR_WIDTH - CHARACTER_PADDING}
-							y={yForI(index)}
-							textAnchor="end"
-							alignmentBaseline="central"
-						>
-							{letter}
-						</text>
-					</Fragment>
-				);
-			})}
-			<Signal
+			<SignalWire
 				from={signalsTowardsReflector[1]}
 				to={signalsTowardsReflector[0]}
 				stroke="blue"
 			/>
-			<Signal from={signalsTowardsLamps[0]} to={signalsTowardsLamps[1]} stroke="red" />
+			<SignalWire from={signalsTowardsLamps[0]} to={signalsTowardsLamps[1]} stroke="red" />
+			{alphabet.split('').map((_, index) => {
+				const letter = alphabet.charAt((index + instance.rotation) % instance.size);
+				return (
+					<Fragment key={index}>
+						<SignalLetter
+							index={index}
+							letter={letter}
+							x={CHARACTER_PADDING}
+							highlight={
+								signalsTowardsReflector[1] === index
+									? 'blue'
+									: signalsTowardsLamps[0] === index
+									? 'red'
+									: undefined
+							}
+						/>
+						<SignalLetter
+							index={index}
+							letter={letter}
+							x={ROTOR_WIDTH - CHARACTER_PADDING}
+							highlight={
+								signalsTowardsReflector[0] === index
+									? 'blue'
+									: signalsTowardsLamps[1] === index
+									? 'red'
+									: undefined
+							}
+						/>
+					</Fragment>
+				);
+			})}
 		</>
 	);
 };

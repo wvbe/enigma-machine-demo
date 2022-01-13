@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import { WIRE_PADDING, ROTOR_WIDTH, yForI } from '../util/svg';
 
-export const Signal: FunctionComponent<{
+export const SignalWire: FunctionComponent<{
 	stroke?: string;
 	from?: number;
 	to?: number;
